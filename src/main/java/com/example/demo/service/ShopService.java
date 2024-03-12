@@ -3,13 +3,13 @@ package com.example.demo.service;
 import com.example.demo.model.item.ItemDTO;
 import com.example.demo.model.shop.Shop;
 import com.example.demo.model.shop.ShopDTO;
+import com.example.demo.model.shop.ShopReportDTO;
+import com.example.demo.repository.ReportRepository;
 import com.example.demo.repository.ShopRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RequestBody;
 
-import javax.validation.Valid;
-import javax.validation.constraints.NotNull;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
@@ -19,6 +19,7 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class ShopService {
     private final ShopRepository shopRepository;
+    private final ReportRepository reportRepository;
 
     public List<ShopDTO> getAll(){
         List<Shop> shops = shopRepository.findAll();
@@ -59,5 +60,20 @@ public class ShopService {
         shop.setDate(LocalDateTime.now());
 
         return ShopDTO.convert(shopRepository.save(shop));
+    }
+
+    public List<ShopDTO> getShopsByFilter(
+            LocalDate dataInicio,
+            LocalDate dataFim,
+            Float valorMinimo) {
+        List<Shop> shops = reportRepository.getShopByFilters(dataInicio, dataFim, valorMinimo);
+        return shops
+                .stream()
+                .map(ShopDTO::convert)
+                .collect(Collectors.toList());
+    }
+
+    public ShopReportDTO getReportByDate(LocalDate dataInicio, LocalDate dataFim){
+        return reportRepository.getShopByDate(dataInicio, dataFim);
     }
 }
