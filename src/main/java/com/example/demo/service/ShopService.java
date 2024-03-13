@@ -1,8 +1,9 @@
 package com.example.demo.service;
 
-import com.example.demo.model.item.ItemDTO;
+import com.example.demo.dto.ItemDTO;
+import com.example.demo.dto.ShopDTO;
+import com.example.demo.model.DTOConverter;
 import com.example.demo.model.shop.Shop;
-import com.example.demo.model.shop.ShopDTO;
 import com.example.demo.model.shop.ShopReportDTO;
 import com.example.demo.repository.ReportRepository;
 import com.example.demo.repository.ShopRepository;
@@ -25,7 +26,7 @@ public class ShopService {
         List<Shop> shops = shopRepository.findAll();
         return shops
                 .stream()
-                .map(ShopDTO::convert)
+                .map(DTOConverter::convert)
                 .collect(Collectors.toList());
     }
 
@@ -33,7 +34,7 @@ public class ShopService {
         List<Shop> shops = shopRepository.findAllByUserIdentifier(userIdentifier);
         return shops
                 .stream()
-                .map(ShopDTO::convert)
+                .map(DTOConverter::convert)
                 .collect(Collectors.toList());
     }
 
@@ -42,12 +43,12 @@ public class ShopService {
 
         return shops
                 .stream()
-                .map(ShopDTO::convert)
+                .map(DTOConverter::convert)
                 .collect(Collectors.toList());
     }
     public ShopDTO findById(Long productId){
         Optional<Shop> shop = shopRepository.findById(productId);
-        return shop.map(ShopDTO::convert).orElse(null);
+        return shop.map(DTOConverter::convert).orElse(null);
     }
 
     public ShopDTO save(ShopDTO shopDTO){
@@ -56,10 +57,10 @@ public class ShopService {
                 .map(ItemDTO::getPrice)
                 .reduce((float) 0, Float::sum)
         );
-        Shop shop = Shop.convert(shopDTO);
+        Shop shop = DTOConverter.convert(shopDTO);
         shop.setDate(LocalDateTime.now());
 
-        return ShopDTO.convert(shopRepository.save(shop));
+        return DTOConverter.convert(shopRepository.save(shop));
     }
 
     public List<ShopDTO> getShopsByFilter(
@@ -69,7 +70,7 @@ public class ShopService {
         List<Shop> shops = reportRepository.getShopByFilters(dataInicio, dataFim, valorMinimo);
         return shops
                 .stream()
-                .map(ShopDTO::convert)
+                .map(DTOConverter::convert)
                 .collect(Collectors.toList());
     }
 
