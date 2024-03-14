@@ -40,8 +40,10 @@ public class ShopController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public ShopDTO newShop(@RequestBody ShopDTO shopDTO) {
-        return shopService.save(shopDTO);
+    public ShopDTO newShop(
+            @RequestHeader(name = "key") String key,
+            @RequestBody ShopDTO shopDTO) {
+        return shopService.save(shopDTO, key);
     }
 
     @GetMapping("/search")

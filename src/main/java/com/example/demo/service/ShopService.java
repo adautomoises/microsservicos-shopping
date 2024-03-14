@@ -55,13 +55,9 @@ public class ShopService {
         return shop.map(DTOConverter::convert).orElse(null);
     }
 
-    public ShopDTO save(ShopDTO shopDTO) {
-        if (userService.getUserByCpf(shopDTO.getUserIdentifier()) == null) {
-            return null;
-        }
-        if (!validateProducts(shopDTO.getItems())) {
-            return null;
-        }
+    public ShopDTO save(ShopDTO shopDTO, String key) {
+        userService.getUserByCpfAndKey(shopDTO.getUserIdentifier(), key);
+        validateProducts(shopDTO.getItems());
 
         shopDTO.setTotal(shopDTO.getItems()
                 .stream()
