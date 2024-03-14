@@ -1,6 +1,7 @@
 package com.example.demo.service;
 
 import com.example.demo.dto.UserDTO;
+import com.example.demo.exception.UserNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
@@ -24,7 +25,7 @@ public class UserService {
 
             return user.block();
         } catch (Exception e) {
-            throw new RuntimeException("Usuário não encontrado");
+            throw new UserNotFoundException();
         }
     }
 }

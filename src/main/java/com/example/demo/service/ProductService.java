@@ -1,6 +1,7 @@
 package com.example.demo.service;
 
 import com.example.demo.dto.ProductDTO;
+import com.example.demo.exception.ProductNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
@@ -24,7 +25,7 @@ public class ProductService {
 
             return product.block();
         } catch (Exception e) {
-            throw new RuntimeException("Produto não encontrado");
+            throw new ProductNotFoundException();
         }
     }
 
