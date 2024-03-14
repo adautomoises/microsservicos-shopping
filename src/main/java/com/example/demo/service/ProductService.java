@@ -19,7 +19,7 @@ public class ProductService {
                     .build();
 
             Mono<ProductDTO> product = webClient.get()
-                    .uri("/produto/" + productIdentifier)
+                    .uri("/product/" + productIdentifier)
                     .retrieve()
                     .bodyToMono(ProductDTO.class);
 
